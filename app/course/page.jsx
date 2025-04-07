@@ -7,8 +7,18 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Footer from "../components/footer";
 
+const SkeletonCard = () => (
+  <div className="bg-white p-4 rounded-lg shadow-md animate-pulse">
+    <div className="h-40 bg-gray-300 rounded mb-4"></div>
+    <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+    <div className="h-4 bg-gray-300 rounded w-1/2 mb-2"></div>
+    <div className="h-8 bg-gray-300 rounded w-full"></div>
+  </div>
+);
+
 export default function Page() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -17,10 +27,11 @@ export default function Page() {
       try {
         const res = await fetch("/api/course");
         const data = await res.json();
-        console.log("Courses data:", data.data);
         setCourses(data.data || []);
       } catch (error) {
         console.error("Failed to fetch courses:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -59,32 +70,39 @@ export default function Page() {
   };
 
   return (
-    <div className="course bg-bg-primary overflow-y-scroll min-h-screen">
+    <div className="bg-bg-primary min-h-screen">
       <Nav />
-      <div className="flex flex-col items-center justify-center mt-40 w-full text-white px-6 py-[10rem] gap-5">
-        <h1 className="text-5xl md:text-7xl font-bold uppercase text-center">
+      <div className="flex flex-col items-center justify-center mt-24 px-4 text-white text-center">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold uppercase leading-tight">
           Explore the Course
         </h1>
+        <p className="mt-4 text-lg sm:text-xl text-gray-100">
+          Learn from the best. Anytime, anywhere.
+        </p>
+      </div>
+      <div className="bg-gray-100 w-full py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {loading ? (
+            Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : courses.length > 0 ? (
+            courses.map((course) => (
+              <CourseCard
+                key={course._id}
+                _id={course._id}
+                name={course.title}
+                author={course.instructorName}
+                price={course.price}
+                handlerFunction={() => enrollCourse(course._id)}
+              />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-600 text-lg font-medium">
+              No courses available.
+            </p>
+          )}
+        </div>
       </div>
 
-      <div className="bg-gray-200 w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 py-10 px-6">
-        {courses.length > 0 ? (
-          courses.map((course) => (
-            <CourseCard
-              key={course._id}
-              _id={course._id}
-              name={course.title}
-              author={course.instructorName}
-              price={course.price}
-              handlerFunction={() => enrollCourse(course._id)} // ✅ FIXED!
-            />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-600">
-            No courses available
-          </p>
-        )}
-      </div>
       <Footer />
     </div>
   );

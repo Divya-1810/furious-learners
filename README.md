@@ -1,36 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎓 Instructor Authentication App
 
-## Getting Started
+This project is a full-stack, mobile-responsive web application built with **Next.js**, **NextAuth.js**, **MongoDB**, and **Tailwind CSS**. It supports **instructor registration**, **user login**, and **secure authentication** using credential-based login via NextAuth.
 
-First, run the development server:
+---
+
+## 🌟 Features
+
+- ✅ Instructor Sign-Up Form (with education and bio input)
+- 🔐 Secure User Sign-In (email & password using NextAuth)
+- 🧩 Role-based registration (`instructor`)
+- 🖥️ Fully responsive UI for mobile, tablet, and desktop
+- 🚫 Client-side & Server-side validation with error/success messages
+- 🧠 State managed using React Hooks
+- 🌐 API route handling for instructor registration
+
+---
+
+## 📸 Screenshots
+
+| Sign In Page                           | Instructor Sign Up Page                |
+| -------------------------------------- | -------------------------------------- |
+| ![SignIn](./public/screens/signin.png) | ![SignUp](./public/screens/signup.png) |
+
+---
+
+## 🧰 Tech Stack
+
+- **Frontend**: Next.js, React, Tailwind CSS
+- **Backend**: NextAuth.js, MongoDB, Node.js
+- **Database**: MongoDB (via Mongoose)
+- **Styling**: Tailwind CSS
+- **Authentication**: Credential-based using NextAuth
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/instructor-auth-app.git
+cd instructor-auth-app
+```
+
+### 2. Install Node Modules
+
+```bash
+npm install
+```
+
+### 3. Create `.env.local`
+
+Create a file `.env.local` at the root of the project and add the following variables:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_secret_key
+NEXTAUTH_URL=http://localhost:3000
+```
+
+---
+
+## 🚀 Running the App
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Navigate to: [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Folder Structure
 
-## Learn More
+```
+instructor-auth-app/
+├── app/
+│   └── auth/
+│       ├── signin.jsx
+│       └── signup-instructor.jsx
+├── pages/
+│   └── api/
+│       ├── auth/[...nextauth].js
+│       └── instructor/index.js
+├── lib/
+│   └── mongodb.js
+├── models/
+│   └── User.js
+├── public/
+│   └── screens/
+├── styles/
+│   └── globals.css
+├── .env.local
+├── package.json
+├── README.md
+└── next.config.js
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧪 Usage Guide
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 👤 Sign In
 
-## Deploy on Vercel
+- URL: `/auth/signin`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🧑‍🏫 Instructor Signup
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- URL: `/auth/signup-instructor`
+
+---
+
+## 🔐 Authentication Flow
+
+1. Instructor registers → `/api/instructor` stores data.
+2. Sign in uses `NextAuth` with "credentials" provider.
+3. Session persists using cookies via NextAuth.
+4. After login, user is redirected to the home page (`/`).
+
+---
+
+## 🧾 API Reference
+
+### POST `/api/instructor`
+
+Registers a new instructor.
+
+#### Request Body:
+
+```json
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "yourpassword",
+  "gender": "female",
+  "educationDetails": "PhD in Computer Science",
+  "shortBio": "Passionate educator and AI researcher",
+  "role": "instructor"
+}
+```
+
+---
+
+## 🌍 Deployment Guide
+
+You can deploy this app on **Vercel** or **Render**.
+
+---
+
+## 👥 Contributors
+
+Made with ❤️ by [Techon IT Solution](https://www.techonitsolution.com)
+
+---
+
+## 📬 Contact
+
+- 📧 Email: hello@techonitsolution.com
+- 🌐 Website: [www.techonitsolution.com](https://www.techonitsolution.com)
+- 📍 Location: Tamil Nadu, India
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License**.

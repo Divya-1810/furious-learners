@@ -4,7 +4,6 @@ import Nav from "@/app/components/Nav";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { FaPlay } from "react-icons/fa";
 import Footer from "@/app/components/footer";
 
 export default function CourseVideoPage() {
@@ -58,7 +57,7 @@ export default function CourseVideoPage() {
       setMessage("");
       setShowForm(false);
     } catch (err) {
-      setMailStatus(err);
+      setMailStatus("Failed to send message.");
       setSending(false);
       console.error("Mail Error:", err);
     }
@@ -66,7 +65,7 @@ export default function CourseVideoPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-red-600 text-xl">
+      <div className="min-h-screen flex justify-center items-center text-red-600 text-lg md:text-xl">
         {error}
       </div>
     );
@@ -74,7 +73,7 @@ export default function CourseVideoPage() {
 
   if (!course) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-xl">
+      <div className="min-h-screen flex justify-center items-center text-lg md:text-xl">
         Loading course...
       </div>
     );
@@ -84,14 +83,14 @@ export default function CourseVideoPage() {
     <div className="min-h-screen bg-gradient-to-br from-white via-teal-50 to-white text-gray-800">
       <Nav />
 
-      <main className="flex flex-col lg:flex-row gap-6 p-6">
+      <main className="flex flex-col lg:flex-row gap-6 px-4 py-8 sm:px-6 lg:px-12">
         <section className="flex-1 flex flex-col gap-4">
-          <h1 className="text-3xl font-bold">{course.title}</h1>
-          <h2 className="text-xl text-gray-600 font-medium">
+          <h1 className="text-2xl sm:text-3xl font-bold">{course.title}</h1>
+          <h2 className="text-lg text-gray-600 font-medium">
             Lecture: {videoTitle}
           </h2>
 
-          <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
+          <div className="w-full aspect-video rounded-xl shadow-lg overflow-hidden">
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/${url}`}
@@ -116,8 +115,10 @@ export default function CourseVideoPage() {
           )}
         </section>
 
-        <aside className="w-full lg:w-[30%] max-h-[75vh] bg-white rounded-xl shadow-lg p-4 overflow-y-auto">
-          <h3 className="text-2xl font-semibold mb-4">Course Contents</h3>
+        <aside className="w-full lg:w-[30%] max-h-[70vh] bg-white rounded-xl shadow-lg p-4 overflow-y-auto">
+          <h3 className="text-xl sm:text-2xl font-semibold mb-4">
+            Course Contents
+          </h3>
           <ul className="space-y-3">
             {course.modules?.map((mod, index) => (
               <li
@@ -156,7 +157,7 @@ export default function CourseVideoPage() {
               <button
                 onClick={handleSendMail}
                 disabled={sending}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700"
+                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-60"
               >
                 {sending ? "Sending..." : "Send"}
               </button>
@@ -164,6 +165,7 @@ export default function CourseVideoPage() {
           </div>
         </div>
       )}
+
       <Footer />
     </div>
   );

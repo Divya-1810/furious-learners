@@ -25,43 +25,57 @@ export default function SignInPage() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center justify-center bg-[#8fddd7] h-[100vh] gap-4 "
-    >
-      <h1 className="font-bold text-2xl">Signin</h1>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Eamil"
-        required
-        className="border-2 w-[300px] px-3 py-2 outline-none"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        placeholder="password"
-        className="border-2 w-[300px] px-3 py-2 outline-none"
-      />
-      {error && <p>{error}</p>}
-      <button
-        type="submit"
-        className="border-2 w-[300px] px-3 py-2 font-semibold"
+    <div className="flex items-center justify-center min-h-screen bg-[#8fddd7] px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded-lg shadow-md w-full max-w-md space-y-4"
       >
-        Sign In
-      </button>
-      <p className="font-bold tracking-wider text-xl">
-        Create a new account{" "}
-        <Link
-          href="/auth/signup"
-          className="text-blue-400 font-extrabold ml-2  "
+        <h1 className="text-2xl font-bold text-center text-gray-800">
+          Sign In
+        </h1>
+
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          required
+          className="border border-gray-300 rounded-md w-full px-3 py-2"
+        />
+
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          placeholder="Password"
+          className="border border-gray-300 rounded-md w-full px-3 py-2"
+        />
+
+        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+        <button
+          type="submit"
+          className="bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-md w-full py-2 transition duration-300"
         >
-          Signup
-        </Link>
-      </p>
-    </form>
+          Sign In
+        </button>
+
+        <p className="text-sm text-center text-gray-700">
+          Don't have an account?
+          <Link href="/auth/signup" className="text-blue-600 font-bold ml-1">
+            Signup
+          </Link>
+        </p>
+        <p className="text-sm text-center text-gray-700">
+          <Link
+            href="/auth/instructor/signup"
+            className="text-blue-600 font-bold ml-1"
+          >
+            Create Instructor account
+          </Link>
+        </p>
+      </form>
+    </div>
   );
 }
