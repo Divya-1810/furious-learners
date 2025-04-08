@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { TiStarFullOutline } from "react-icons/ti";
 
@@ -7,6 +8,8 @@ export default function CourseCard({
   author,
   price,
   handlerFunction,
+  buttonText,
+  isEnrolled,
 }) {
   return (
     <div className="bg-white flex flex-col justify-between gap-4 p-5 m-2 rounded shadow-md hover:shadow-xl transition-all duration-200">
@@ -24,12 +27,24 @@ export default function CourseCard({
           <p className="font-semibold text-gray-700">$200</p>
         </div>
       </div>
-      <button
-        onClick={() => handlerFunction}
-        className="w-full outline-none text-[#09887D] border-2 rounded-lg py-2 font-bold border-[#09887D] hover:bg-[#09887D] hover:text-white transition"
-      >
-        Enroll Now
-      </button>
+      {isEnrolled ? (
+        <Link
+          href={`/course/${_id}`}
+          className="w-full outline-none text-[#09887D] text-center border-2 rounded-lg py-2 font-bold border-[#09887D] hover:bg-[#09887D] hover:text-white transition"
+        >
+          Continue
+        </Link>
+      ) : (
+        <button
+          onClick={() => {
+            console.log("clidk");
+            handlerFunction;
+          }}
+          className="w-full outline-none text-[#09887D] border-2 rounded-lg py-2 font-bold border-[#09887D] hover:bg-[#09887D] hover:text-white transition"
+        >
+          Enrolled
+        </button>
+      )}
     </div>
   );
 }

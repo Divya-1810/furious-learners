@@ -15,8 +15,11 @@ export default function UserEnrolledCourses({
         <h3 className="font-semibold">Modules:</h3>
         <p className="fot-semilbold">{modules.length}</p>
       </div>
-      <Link href={`course/${_id}`} className="px-3 py-1 bg-teal-300 rounded ">
-        View
+      <Link
+        href={`course/${_id}`}
+        className="px-3 py-2 text-center font-semibold text-white bg-teal-300 rounded "
+      >
+        continue
       </Link>
     </div>
   );

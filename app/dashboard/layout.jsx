@@ -4,7 +4,7 @@ import Footer from "../components/footer";
 
 export default function layout({ children }) {
   return (
-    <div className="bg-teal-400 h-screen w-screen ">
+    <div className="bg-teal-400 h-fit w-screen ">
       <Nav />
       <div>{children}</div>
       <Footer />

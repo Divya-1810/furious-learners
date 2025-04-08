@@ -19,8 +19,41 @@ const SkeletonCard = () => (
 export default function Page() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const { data: session } = useSession();
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        if (!session?.user?._id) {
+          console.warn("Session or user ID not available");
+          setLoading(false);
+          return;
+        }
+        const res = await fetch(`/api/user/?id=${session.user._id}`);
+        if (!res.ok) {
+          console.log("Failed to fetch user. Status:", res.status);
+          setLoading(false);
+          return;
+        }
+
+        const result = await res.json();
+        setUser(result.data);
+        console.log("Fetched user:", result.data);
+      } catch (error) {
+        console.log("Error fetching user:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      getUser();
+    } else {
+      setLoading(false);
+    }
+  }, [session]);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -69,14 +102,16 @@ export default function Page() {
     }
   };
 
+  console.log(user);
+
   return (
-    <div className="bg-bg-primary min-h-screen">
+    <div className="bg-gray-100 min-h-screen">
       <Nav />
-      <div className="flex flex-col items-center justify-center mt-24 px-4 text-white text-center">
+      <div className="flex flex-col items-center justify-center mt-2 px-4 bg-gray-100 text-black text-center">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold uppercase leading-tight">
           Explore the Course
         </h1>
-        <p className="mt-4 text-lg sm:text-xl text-gray-100">
+        <p className="mt-4 text-lg sm:text-xl text-gray-400">
           Learn from the best. Anytime, anywhere.
         </p>
       </div>
@@ -85,16 +120,24 @@ export default function Page() {
           {loading ? (
             Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
           ) : courses.length > 0 ? (
-            courses.map((course) => (
-              <CourseCard
-                key={course._id}
-                _id={course._id}
-                name={course.title}
-                author={course.instructorName}
-                price={course.price}
-                handlerFunction={() => enrollCourse(course._id)}
-              />
-            ))
+            courses.map((course) => {
+              const isEnrolled = user?.enrolledCourses?.includes(course._id);
+
+              return (
+                <CourseCard
+                  key={course._id}
+                  _id={course._id}
+                  name={course.title}
+                  author={course.instructorName}
+                  price={course.price}
+                  handlerFunction={() => {
+                    enrollCourse(course._id);
+                  }}
+                  isEnrolled={isEnrolled}
+                  buttonText={isEnrolled ? "Continue" : "Enroll"}
+                />
+              );
+            })
           ) : (
             <p className="text-center col-span-full text-gray-600 text-lg font-medium">
               No courses available.

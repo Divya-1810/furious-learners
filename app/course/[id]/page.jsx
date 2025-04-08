@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Footer from "@/app/components/footer";
+import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
 export default function CourseVideoPage() {
   const { data: session } = useSession();
@@ -26,6 +27,8 @@ export default function CourseVideoPage() {
         const res = await fetch(`/api/course?id=${id}`);
         const data = await res.json();
         setCourse(data.data[0]);
+        setUrl(data.data[0].modules[0].youtubeUrl);
+        setVideoTitle(data.data[0].modules[0].title);
       } catch (err) {
         setError("Something went wrong while fetching course.");
       }
@@ -62,6 +65,43 @@ export default function CourseVideoPage() {
       console.error("Mail Error:", err);
     }
   };
+  const generateCertificate = async () => {
+    const existingPdfBytes = await fetch("/LMS.pdf").then((res) =>
+      res.arrayBuffer()
+    );
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+
+    const { width, height } = firstPage.getSize();
+    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+    firstPage.drawText(session?.user?.name, {
+      x: 360,
+      y: height - 310,
+      size: 35,
+      font,
+      color: rgb(0, 0, 0),
+    });
+
+    firstPage.drawText(course.title, {
+      x: 360,
+      y: height - 362.5,
+      size: 16,
+      font,
+      color: rgb(0.2, 0.2, 0.2),
+    });
+
+    const pdfBytes = await pdfDoc.save();
+
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${session?.user?.name}_certificate.pdf`;
+    a.click();
+  };
 
   if (error) {
     return (
@@ -93,7 +133,7 @@ export default function CourseVideoPage() {
           <div className="w-full aspect-video rounded-xl shadow-lg overflow-hidden">
             <iframe
               className="w-full h-full"
-              src={`https://www.youtube.com/embed/${url}`}
+              src={url}
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -133,6 +173,12 @@ export default function CourseVideoPage() {
               </li>
             ))}
           </ul>
+          <button
+            className="mt-4 w-fit px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition"
+            onClick={generateCertificate}
+          >
+            Get certificate
+          </button>
         </aside>
       </main>
 

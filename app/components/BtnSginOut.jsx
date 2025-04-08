@@ -66,12 +66,12 @@ export default function BtnSginOut() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6">
+    <div className="max-w-3xl mx-auto px-2 sm:px-6 lg:px-8 py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2">
         My Profile
       </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white rounded-lg shadow-md p-6">
+      <div className="grid grid-cols-1 gap-6 bg-white rounded-lg shadow-md p-3">
         <div>
           <h3 className="text-sm sm:text-base font-semibold text-gray-700">
             Name:

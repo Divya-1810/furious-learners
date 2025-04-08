@@ -9,7 +9,7 @@ const UserEnrolledCourses = dynamic(
   () => import("../components/UserCourseCard"),
   {
     loading: () => (
-      <div className="p-4 bg-white rounded shadow animate-pulse h-40">
+      <div className="p-4 bg-white rounded-lg border shadow animate-pulse h-40">
         Loading course...
       </div>
     ),
@@ -49,29 +49,37 @@ export default function Page() {
 
   if (status === "loading" || loadingCourses) {
     return (
-      <section className="flex flex-col items-center justify-center p-6 text-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-600"></div>
-        <p className="mt-4 text-gray-600 text-lg">Loading your dashboard...</p>
+      <section className="flex flex-col items-center justify-center min-h-[50vh] text-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-gray-700"></div>
+        <p className="mt-4 text-gray-500 text-base">
+          Loading your dashboard...
+        </p>
       </section>
     );
   }
 
   return (
-    <main className="p-4 container mx-auto flex flex-col md:flex-row gap-6">
-      <aside className="w-full md:w-[35%] lg:w-[25%]">
-        <div className="flex flex-col gap-6 p-4 rounded-xl bg-teal-200 shadow-md h-full">
+    <main className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
+      <aside className="w-full md:w-[30%]">
+        <div className="bg-white border rounded-lg p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            Welcome 👋
+          </h2>
           <BtnSginOut />
         </div>
       </aside>
+      <section className="w-full md:w-[70%]">
+        <div className="bg-white border rounded-lg p-6 shadow-sm">
+          <h1 className="text-xl font-semibold text-gray-800 mb-6">
+            My Courses
+          </h1>
 
-      <section className="w-full md:w-[65%] lg:w-[75%]">
-        <div className="bg-blue-100 rounded-xl p-4 shadow-md max-h-[80vh] overflow-y-auto">
           {courses.length === 0 ? (
-            <p className="text-gray-600 text-center text-lg font-medium">
-              You're not enrolled in any courses yet.
-            </p>
+            <div className="text-center text-gray-500 text-base mt-8">
+              <p>No courses enrolled yet.</p>
+            </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course) => (
                 <UserEnrolledCourses
                   key={course._id}
