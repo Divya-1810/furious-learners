@@ -1,34 +1,38 @@
 "use client";
 
 import Nav from "@/app/components/Nav";
+import Footer from "@/app/components/footer";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Footer from "@/app/components/footer";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
 export default function CourseVideoPage() {
   const { data: session } = useSession();
-  const router = useRouter();
   const { id } = useParams();
+  const router = useRouter();
+
   const [course, setCourse] = useState(null);
-  const [error, setError] = useState(null);
-  const [url, setUrl] = useState(null);
+  const [instructorEmail, setInstructorEmail] = useState("");
   const [videoTitle, setVideoTitle] = useState("Introduction");
+  const [url, setUrl] = useState("");
+  const [error, setError] = useState(null);
 
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [mailStatus, setMailStatus] = useState("");
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const res = await fetch(`/api/course?id=${id}`);
         const data = await res.json();
-        setCourse(data.data[0]);
-        setUrl(data.data[0].modules[0].youtubeUrl);
-        setVideoTitle(data.data[0].modules[0].title);
+        const fetchedCourse = data.data[0];
+        setCourse(fetchedCourse);
+        setUrl(fetchedCourse.modules?.[0]?.youtubeUrl || "");
+        setVideoTitle(fetchedCourse.modules?.[0]?.title || "Introduction");
       } catch (err) {
         setError("Something went wrong while fetching course.");
       }
@@ -36,14 +40,30 @@ export default function CourseVideoPage() {
     fetchCourse();
   }, [id]);
 
+  useEffect(() => {
+    const fetchInstructor = async () => {
+      if (!course?.instructor) return;
+
+      try {
+        const res = await fetch(`/api/instructor/?id=${course.instructor}`);
+        const result = await res.json();
+        console.log(result);
+        setInstructorEmail(result.data.email);
+      } catch (err) {
+        console.error("Instructor fetch error:", err);
+      }
+    };
+    fetchInstructor();
+  }, [course]);
+
   const handleSendMail = async () => {
     setSending(true);
     setMailStatus("");
 
     const payload = {
-      instructorEmail: course.instructorEmail,
-      courseTitle: course.title,
-      studentEmail: session?.user?.email || "anonymous@student.com",
+      instructorEmail,
+      courseTitle: course?.title,
+      studentEmail: session?.user?.email,
       message,
     };
 
@@ -62,50 +82,54 @@ export default function CourseVideoPage() {
     } catch (err) {
       setMailStatus("Failed to send message.");
       setSending(false);
-      console.error("Mail Error:", err);
     }
   };
+
   const generateCertificate = async () => {
-    const existingPdfBytes = await fetch("/LMS.pdf").then((res) =>
-      res.arrayBuffer()
-    );
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    setDownloading(true);
+    try {
+      const existingPdfBytes = await fetch("/LMS.pdf").then((res) =>
+        res.arrayBuffer()
+      );
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const pages = pdfDoc.getPages();
+      const firstPage = pages[0];
+      const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+      const { height } = firstPage.getSize();
 
-    const pages = pdfDoc.getPages();
-    const firstPage = pages[0];
+      firstPage.drawText(session?.user?.name || "Student", {
+        x: 360,
+        y: height - 310,
+        size: 35,
+        font,
+        color: rgb(0, 0, 0),
+      });
 
-    const { width, height } = firstPage.getSize();
-    const font = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+      firstPage.drawText(course?.title || "Course Title", {
+        x: 360,
+        y: height - 362.5,
+        size: 16,
+        font,
+        color: rgb(0.2, 0.2, 0.2),
+      });
 
-    firstPage.drawText(session?.user?.name, {
-      x: 360,
-      y: height - 310,
-      size: 35,
-      font,
-      color: rgb(0, 0, 0),
-    });
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
 
-    firstPage.drawText(course.title, {
-      x: 360,
-      y: height - 362.5,
-      size: 16,
-      font,
-      color: rgb(0.2, 0.2, 0.2),
-    });
-
-    const pdfBytes = await pdfDoc.save();
-
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${session?.user?.name}_certificate.pdf`;
-    a.click();
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${session?.user?.name}_certificate.pdf`;
+      a.click();
+    } catch (error) {
+      console.error("PDF generation error:", error);
+    }
+    setDownloading(false);
   };
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-red-600 text-lg md:text-xl">
+      <div className="min-h-screen flex justify-center items-center text-red-600 text-lg">
         {error}
       </div>
     );
@@ -113,7 +137,7 @@ export default function CourseVideoPage() {
 
   if (!course) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-lg md:text-xl">
+      <div className="min-h-screen flex justify-center items-center text-lg">
         Loading course...
       </div>
     );
@@ -124,6 +148,7 @@ export default function CourseVideoPage() {
       <Nav />
 
       <main className="flex flex-col lg:flex-row gap-6 px-4 py-8 sm:px-6 lg:px-12">
+        {/* Left: Video */}
         <section className="flex-1 flex flex-col gap-4">
           <h1 className="text-2xl sm:text-3xl font-bold">{course.title}</h1>
           <h2 className="text-lg text-gray-600 font-medium">
@@ -154,7 +179,6 @@ export default function CourseVideoPage() {
             </p>
           )}
         </section>
-
         <aside className="w-full lg:w-[30%] max-h-[70vh] bg-white rounded-xl shadow-lg p-4 overflow-y-auto">
           <h3 className="text-xl sm:text-2xl font-semibold mb-4">
             Course Contents
@@ -174,14 +198,16 @@ export default function CourseVideoPage() {
             ))}
           </ul>
           <button
-            className="mt-4 w-fit px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition"
+            className="mt-4 w-full px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition disabled:opacity-60"
             onClick={generateCertificate}
+            disabled={downloading}
           >
-            Get certificate
+            {downloading ? "Generating..." : "Get Certificate"}
           </button>
         </aside>
       </main>
 
+      {/* Message Popup */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-xl w-[90%] max-w-md shadow-2xl">

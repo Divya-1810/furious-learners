@@ -10,12 +10,12 @@ export async function POST(req) {
       service: "gmail",
       auth: {
         user: "sowmikavadivel5@gmail.com",
-        pass: "fpsaclewxykvytws",
+        pass: "fpsa clew xykv ytws",
       },
     });
 
     await transporter.sendMail({
-      from: `"Course App" <sowmikavadivel5@gmail.com>`,
+      from: `"Furious_learner" <sowmikavadivel5@gmail.com>`,
       to: instructorEmail,
       subject: `Message from a Student - ${courseTitle}`,
       text: `${message}\n\nStudent Email: ${studentEmail}`,

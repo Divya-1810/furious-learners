@@ -2,18 +2,16 @@ import Course from "@/app/models/Course";
 import connectDB from "@/app/utils/db";
 import { NextResponse } from "next/server";
 
-// PATCH: Add a module to a course
 export async function PATCH(req, { params }) {
   await connectDB();
 
-  const { id } = await params;
+  const { id } = params;
   if (!id) {
     return NextResponse.json({ error: "Missing course ID" }, { status: 400 });
   }
 
   const { title, content, youtubeUrl, order } = await req.json();
 
-  // Construct new module object
   const newModule = {
     title,
     content,
@@ -25,7 +23,7 @@ export async function PATCH(req, { params }) {
     const updatedCourse = await Course.findByIdAndUpdate(
       id,
       { $push: { modules: newModule } },
-      { new: true } // return the updated course
+      { new: true }
     );
 
     if (!updatedCourse) {
