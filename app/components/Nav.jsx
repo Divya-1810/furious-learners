@@ -1,6 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import { BsYoutube } from "react-icons/bs";
 import Link from "next/link";
@@ -57,12 +57,20 @@ export default function Nav() {
           <BsYoutube className="cursor-pointer hover:text-[#09887D] text-2xl" />
         </div>
         {session ? (
-          <button
-            className="bg-[#0AA89D] text-white px-4 py-2 rounded-md hover:bg-[#09887D]"
-            onClick={handleClick}
-          >
-            Profile
-          </button>
+          <>
+            <button
+              className="bg-[#0AA89D] text-white px-4 py-2 rounded-md hover:bg-[#09887D]"
+              onClick={handleClick}
+            >
+              Profile
+            </button>
+            <button
+              className="bg-[#0AA89D] text-white px-4 py-2 rounded-md hover:bg-[#09887D]"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <Link
             href="/auth/signin"

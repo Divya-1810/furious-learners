@@ -93,6 +93,7 @@ export default function Page() {
 
       if (res.ok) {
         alert("✅ Enrolled successfully!");
+        window.location.reload();
       } else {
         alert(data.message || "Failed to enroll.");
       }
@@ -101,8 +102,6 @@ export default function Page() {
       alert("Something went wrong while enrolling.");
     }
   };
-
-  console.log(user);
 
   return (
     <div className="bg-gray-100 min-h-screen">

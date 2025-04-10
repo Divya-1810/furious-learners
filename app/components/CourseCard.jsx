@@ -36,7 +36,7 @@ export default function CourseCard({
         </Link>
       ) : (
         <button
-          onClick={() => handlerFunction}
+          onClick={handlerFunction}
           className="w-full outline-none text-[#09887D] border-2 rounded-lg py-2 font-bold border-[#09887D] hover:bg-[#09887D] hover:text-white transition"
         >
           Enrolled

@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Nav from "./components/Nav";
 import { GiOpenBook } from "react-icons/gi";
 import { FaArrowRightLong } from "react-icons/fa6";
@@ -7,8 +9,30 @@ import { FaPersonMilitaryPointing } from "react-icons/fa6";
 import CourseCategories from "./components/CourseCart";
 import PricingPlans from "./components/PricePlan";
 import Footer from "./components/footer";
+import { useSession } from "next-auth/react";
 
 export default function Page() {
+  const { data: session } = useSession();
+  const [showGetStarted, setShowGetStarted] = useState(true);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      const key = `getStartedClicked-${session.user.email}`;
+      const alreadyClicked = localStorage.getItem(key);
+      if (alreadyClicked) {
+        setShowGetStarted(false);
+      }
+    }
+  }, [session?.user?.email]);
+
+  const handleGetStartedClick = () => {
+    if (session?.user?.email) {
+      const key = `getStartedClicked-${session.user.email}`;
+      localStorage.setItem(key, "true");
+      setShowGetStarted(false);
+    }
+  };
+
   return (
     <div className="home bg-bg-primary overflow-x-hidden">
       <Nav />
@@ -23,16 +47,23 @@ export default function Page() {
           Far far away, behind the word mountains, far from the countries
           Vokalia and Consonantia, there live the blind texts.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 uppercase">
-          <button className="flex items-center gap-3 bg-[#09887D] px-6 py-3 font-bold rounded">
-            GET STARTED NOW <FaArrowRightLong />
-          </button>
-          <button className="flex items-center gap-3 text-[#09887D] bg-white px-6 py-3 font-bold rounded">
-            VIEW COURSE <FaArrowRightLong />
-          </button>
-        </div>
+
+        {showGetStarted && (
+          <div className="flex flex-col sm:flex-row gap-4 uppercase">
+            <button
+              className="flex items-center gap-3 bg-[#09887D] px-6 py-3 font-bold rounded"
+              onClick={handleGetStartedClick}
+            >
+              GET STARTED NOW <FaArrowRightLong />
+            </button>
+            <button className="flex items-center gap-3 text-[#09887D] bg-white px-6 py-3 font-bold rounded">
+              VIEW COURSE <FaArrowRightLong />
+            </button>
+          </div>
+        )}
       </div>
 
+      {/* About Section */}
       <div className="w-full bg-gray-50 flex flex-col lg:flex-row">
         <img
           src="./image/about.webp"
@@ -48,36 +79,21 @@ export default function Page() {
           </h1>
 
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-100 p-4 hover:bg-[#09887D] hover:text-white transition-all rounded-md">
-              <GiOpenBook className="text-[4rem]" />
-              <div>
-                <h3 className="text-lg font-bold">Online Courses</h3>
-                <p className="text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-100 p-4 hover:bg-[#09887D] hover:text-white transition-all rounded-md">
-              <PiCertificateDuotone className="text-[4rem]" />
-              <div>
-                <h3 className="text-lg font-bold">Earn A Certificate</h3>
-                <p className="text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia.
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-100 p-4 hover:bg-[#09887D] hover:text-white transition-all rounded-md">
-              <FaPersonMilitaryPointing className="text-[4rem]" />
-              <div>
-                <h3 className="text-lg font-bold">Learn with Experts</h3>
-                <p className="text-sm">
-                  Far far away, behind the word mountains, far from the
-                  countries Vokalia and Consonantia.
-                </p>
-              </div>
-            </div>
+            <Feature
+              icon={<GiOpenBook className="text-[4rem]" />}
+              title="Online Courses"
+              desc="Far far away, behind the word mountains, far from the countries Vokalia and Consonantia."
+            />
+            <Feature
+              icon={<PiCertificateDuotone className="text-[4rem]" />}
+              title="Earn A Certificate"
+              desc="Far far away, behind the word mountains, far from the countries Vokalia and Consonantia."
+            />
+            <Feature
+              icon={<FaPersonMilitaryPointing className="text-[4rem]" />}
+              title="Learn with Experts"
+              desc="Far far away, behind the word mountains, far from the countries Vokalia and Consonantia."
+            />
           </div>
         </div>
       </div>
@@ -85,6 +101,18 @@ export default function Page() {
       <CourseCategories />
       <PricingPlans />
       <Footer />
+    </div>
+  );
+}
+
+function Feature({ icon, title, desc }) {
+  return (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-100 p-4 hover:bg-[#09887D] hover:text-white transition-all rounded-md">
+      {icon}
+      <div>
+        <h3 className="text-lg font-bold">{title}</h3>
+        <p className="text-sm">{desc}</p>
+      </div>
     </div>
   );
 }

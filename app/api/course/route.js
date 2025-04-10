@@ -61,7 +61,7 @@ export async function GET(req, res) {
   try {
     await connectDB();
 
-    const course = await Course.find().select("-password");
+    const course = await Course.find();
     if (!course) {
       return NextResponse.json(
         { success: false, message: "No IDs provided" },

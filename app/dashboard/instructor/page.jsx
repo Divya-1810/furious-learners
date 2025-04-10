@@ -7,51 +7,51 @@ import Link from "next/link";
 export default function InstructorDashboard() {
   const { data: session } = useSession();
   const [user, setUser] = useState(null);
+  const [courses, setCourses] = useState([]);
+  const [formState, setFormState] = useState({ title: "", description: "" });
+  const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [courses, setCourses] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [formState, setFormState] = useState({
-    title: "",
-    description: "",
-  });
-
   const fetchInstructor = async () => {
-    if (!session?.user?._id) {
-      setLoading(false);
-      return;
-    }
-
     try {
       const res = await fetch(`/api/instructor/?id=${session.user._id}`);
-      if (!res.ok) throw new Error("Failed to fetch user");
       const result = await res.json();
       setUser(result.data);
     } catch (err) {
       console.error("Error fetching instructor:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
   const fetchCourses = async () => {
     try {
-      const res = await fetch("/api/course");
+      const res = await fetch(`/api/course`);
       const data = await res.json();
-      if (res.ok) setCourses(data.data);
-      else alert("Error: " + data.message);
+
+      if (res.ok) {
+        const instructorCourses = data.data.filter(
+          (course) => course.instructor === session.user._id
+        );
+        setCourses(instructorCourses);
+      } else {
+        alert("Error: " + data.message);
+      }
     } catch (error) {
       alert("Failed to fetch courses: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchInstructor();
-    fetchCourses();
+    if (session?.user?._id) {
+      fetchInstructor();
+      fetchCourses();
+    }
   }, [session]);
 
   const handleCreateCourse = async () => {
     const { title, description } = formState;
+
     if (!title || !description || !user?._id) {
       return alert("Please fill all fields.");
     }
@@ -72,7 +72,7 @@ export default function InstructorDashboard() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Course created successfully!");
+        alert("✅ Course created!");
         setFormState({ title: "", description: "" });
         setShowForm(false);
         fetchCourses();
@@ -100,11 +100,18 @@ export default function InstructorDashboard() {
     </div>
   );
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen text-lg font-semibold text-gray-700">
+        Loading your dashboard...
+      </div>
+    );
+  }
+
   return (
     <div className="p-4 flex flex-col md:flex-row gap-6 h-full">
       <div className="w-full md:w-1/3 lg:w-1/4 bg-teal-200 p-6 rounded-lg flex flex-col gap-4">
         <h1 className="text-xl font-semibold">My Profile</h1>
-
         <div className="space-y-2 text-sm">
           <p>
             <span className="font-semibold">Name:</span> {user?.name || "Name"}
@@ -143,6 +150,7 @@ export default function InstructorDashboard() {
       </div>
 
       <div className="w-full md:w-2/3 lg:w-3/4 bg-blue-100 rounded-lg p-4 max-h-[80vh] overflow-y-auto">
+        <h2 className="text-xl font-bold mb-4">My Courses</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />
@@ -189,6 +197,7 @@ export default function InstructorDashboard() {
     </div>
   );
 }
+
 function Modal({ title, children, onClose }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
