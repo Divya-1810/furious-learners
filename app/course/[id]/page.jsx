@@ -27,9 +27,11 @@ export default function CourseVideoPage() {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const res = await fetch(`/api/course?id=${id}`);
+        console.log(id);
+        const res = await fetch(`/api/course/${id}`);
         const data = await res.json();
-        const fetchedCourse = data.data[0];
+        const fetchedCourse = data.course;
+        console.log(data.course);
         setCourse(fetchedCourse);
         setUrl(fetchedCourse.modules?.[0]?.youtubeUrl || "");
         setVideoTitle(fetchedCourse.modules?.[0]?.title || "Introduction");
