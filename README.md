@@ -138,30 +138,3 @@ Registers a new instructor.
   "shortBio": "Passionate educator and AI researcher",
   "role": "instructor"
 }
-```
-
----
-
-## 🌍 Deployment Guide
-
-You can deploy this app on **Vercel** or **Render**.
-
----
-
-## 👥 Contributors
-
-Made with ❤️ by [Techon IT Solution](https://www.techonitsolution.com)
-
----
-
-## 📬 Contact
-
-- 📧 Email: hello@techonitsolution.com
-- 🌐 Website: [www.techonitsolution.com](https://www.techonitsolution.com)
-- 📍 Location: Tamil Nadu, India
-
----
-
-## 📝 License
-
-This project is licensed under the **MIT License**.
