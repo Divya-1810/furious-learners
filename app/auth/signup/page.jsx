@@ -15,8 +15,10 @@ export default function SignupPage() {
     gender: "",
     phoneNumber: "",
   });
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false); // NEW: prevent double submit
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,6 +26,9 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (loading) return; // prevent double submission
+    setLoading(true);
     setError("");
     setSuccess("");
 
@@ -37,9 +42,13 @@ export default function SignupPage() {
     if (!res.ok) {
       setError(data.message);
     } else {
-      setSuccess("Registered successfully! Redirecting to login...");
-      setTimeout(() => router.push("/"), 2000);
+      setSuccess("OTP sent to your email. Redirecting to verification...");
+      setTimeout(() => {
+        router.push(`/auth/verify-otp?email=${encodeURIComponent(form.email)}`);
+      }, 2000);
     }
+
+    setLoading(false);
   };
 
   return (
@@ -108,9 +117,12 @@ export default function SignupPage() {
 
         <button
           type="submit"
-          className="bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-md w-full py-2 transition duration-300"
+          disabled={loading}
+          className={`bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-md w-full py-2 transition duration-300 ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Sign Up
+          {loading ? "Processing..." : "Sign Up"}
         </button>
 
         <p className="text-center text-sm">

@@ -1,16 +1,20 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     const res = await signIn("credentials", {
       email,
       password,
@@ -20,7 +24,15 @@ export default function SignInPage() {
     if (res.error) {
       setError(res.error);
     } else {
-      window.location.href = "/";
+      const session = await getSession();
+      const role = session?.user?.role;
+
+      // Redirect to appropriate dashboard
+      if (role === "instructor") {
+        router.push("/dashboard/instructor");
+      } else {
+        router.push("/dashboard");
+      }
     }
   };
 

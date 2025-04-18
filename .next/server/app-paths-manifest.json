@@ -1,1 +1,9 @@
-{}
+{
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/auth/instructor/signup/page": "app/auth/instructor/signup/page.js",
+  "/auth/verify-otp/page": "app/auth/verify-otp/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/auth/verify-otp-instructor/page": "app/auth/verify-otp-instructor/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js"
+}

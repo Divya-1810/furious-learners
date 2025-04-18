@@ -1,3 +1,5 @@
+// app\utils\AuthProvider.jsx
+
 "use client";
 
 import React from "react";

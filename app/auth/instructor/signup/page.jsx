@@ -28,19 +28,25 @@ export default function InstructorSignupPage() {
     setError("");
     setSuccess("");
 
-    const res = await fetch("/api/instructor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    try {
+      const res = await fetch("/api/auth/signup-instructor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.message);
-    } else {
-      setSuccess("Instructor registered successfully! Redirecting...");
-      setTimeout(() => router.push("/auth/signin"), 2000);
+      if (!res.ok) {
+        setError(data.message || "Something went wrong.");
+      } else {
+        setSuccess("OTP sent! Redirecting to verify...");
+        setTimeout(() => {
+          router.push(`/auth/verify-otp-instructor?email=${encodeURIComponent(form.email)}`);
+        }, 1000);
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
     }
   };
 
