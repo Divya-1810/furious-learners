@@ -3,7 +3,8 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-// dfyghujiko
+// dfyghujikoszfdxcgijokl;
+// hgefsg
 export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +17,7 @@ export default function SignInPage() {
       password,
       redirect: false,
     });
-
+// jhdjhghdghgdhgchdvgvuygdhchgfsaidygciusdvkasvducgd
     if (res.error) {
       setError(res.error);
     } else {
