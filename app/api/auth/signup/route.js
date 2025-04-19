@@ -2,7 +2,7 @@ import User from "@/app/models/User";
 import connectDB from "@/app/utils/db";
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
-
+// dhanush commit
 export async function POST(req) {
   try {
     await connectDB();
