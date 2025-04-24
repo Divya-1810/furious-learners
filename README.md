@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎓 Instructor Authentication App
 
 This project is a full-stack, mobile-responsive web application built with **Next.js**, **NextAuth.js**, **MongoDB**, and **Tailwind CSS**. It supports **instructor registration**, **user login**, and **secure authentication** using credential-based login via NextAuth.
@@ -72,10 +73,97 @@ Navigate to: [http://localhost:3000](http://localhost:3000)
 ---
 
 ## 📁 Folder Structure
+=======
+# Furious Learners - Learning Management System
+
+A modern, feature-rich Learning Management System built with Next.js, offering an interactive platform for online education.
+
+![Furious Learners LMS](./public/image/about.webp)
+
+## 🚀 Features
+
+### For Students
+- 📚 Access to diverse course catalog
+- 📝 Course enrollment and progress tracking
+- 📜 Certificate generation upon course completion
+- 👤 Personalized user dashboard
+- ✍️ Interactive learning materials
+
+### For Instructors
+- 📊 Course management dashboard
+- 📤 Easy content upload (videos, PDFs)
+- 👥 Student progress monitoring
+- 📨 Direct communication with students
+- 📈 Course analytics
+
+### General Features
+- 🔐 Secure authentication system
+- 📱 Responsive design for all devices
+- 🎨 Modern and intuitive UI
+- 📧 Email verification system
+- 💳 User profile management
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 13, React, TailwindCSS
+- **Backend**: Next.js API Routes
+- **Database**: MongoDB
+- **Authentication**: NextAuth.js
+- **File Storage**: Cloud Storage
+- **Email Service**: NodeMailer
+- **PDF Generation**: html2pdf.js
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/furious-learners.git
+cd furious-learners
+```
+
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables
+Create a `.env.local` file in the root directory and add:
+```env
+MONGODB_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+EMAIL_SERVER_USER=your_email
+EMAIL_SERVER_PASSWORD=your_email_password
+EMAIL_SERVER_HOST=smtp.gmail.com
+EMAIL_SERVER_PORT=587
+EMAIL_FROM=your_email
+```
+
+4. Run the development server
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## 📁 Project Structure
+>>>>>>> 5fe4666 (Update project)
 
 ```
 instructor-auth-app/
 ├── app/
+<<<<<<< HEAD
 │   └── auth/
 │       ├── signin.jsx
 │       └── signup-instructor.jsx
@@ -138,3 +226,65 @@ Registers a new instructor.
   "shortBio": "Passionate educator and AI researcher",
   "role": "instructor"
 }
+=======
+│   ├── api/            # API routes
+│   ├── components/     # Reusable components
+│   ├── models/        # MongoDB models
+│   ├── utils/         # Utility functions
+│   └── ...           # Page components
+├── public/           # Static files
+└── ...
+```
+
+## 🔑 Key Features Implementation
+
+### Authentication
+- Email/Password authentication
+- OTP verification for new users
+- Protected routes and API endpoints
+
+### Course Management
+- Course creation and editing
+- Module organization
+- Content upload (videos, PDFs)
+- Progress tracking
+
+### User Dashboard
+- Course enrollment
+- Progress monitoring
+- Certificate generation
+- Profile management
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Authors
+
+- Your Name - Initial work - [Your GitHub](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- TailwindCSS for the utility-first CSS framework
+- MongoDB for the flexible database solution
+- All contributors who have helped this project grow
+
+## 📞 Contact
+
+For any queries or support, please contact:
+- Email: info@furiouslearners.com
+- Website: [www.furiouslearners.com](https://www.furiouslearners.com)
+
+---
+
+Made with ♥ by Furious Learners Team
+>>>>>>> 5fe4666 (Update project)

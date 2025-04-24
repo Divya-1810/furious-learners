@@ -41,6 +41,10 @@ export default function SignInPage() {
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md space-y-4"
+<<<<<<< HEAD
+=======
+        suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
       >
         <h1 className="text-2xl font-bold text-center text-gray-800">
           Sign In
@@ -53,6 +57,10 @@ export default function SignInPage() {
           placeholder="Email"
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <input
@@ -62,6 +70,10 @@ export default function SignInPage() {
           required
           placeholder="Password"
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         {error && <p className="text-red-500 text-sm text-center">{error}</p>}
@@ -69,6 +81,10 @@ export default function SignInPage() {
         <button
           type="submit"
           className="bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-md w-full py-2 transition duration-300"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         >
           Sign In
         </button>

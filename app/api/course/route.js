@@ -31,7 +31,11 @@ export async function PATCH(req) {
     !courseId ||
     !newModule?.title ||
     !newModule?.content ||
+<<<<<<< HEAD
     !newModule?.youtubeUrl ||
+=======
+    !newModule?.videoUrl ||
+>>>>>>> 5fe4666 (Update project)
     newModule?.order === undefined
   ) {
     return NextResponse.json(
@@ -40,6 +44,18 @@ export async function PATCH(req) {
     );
   }
 
+<<<<<<< HEAD
+=======
+  // Validate video URL format
+  const videoUrlPattern = /^https?:\/\/.+\.(mp4|webm|ogg)$/i;
+  if (!videoUrlPattern.test(newModule.videoUrl)) {
+    return NextResponse.json(
+      { error: "Invalid video URL format. Must be a direct link to an MP4, WebM, or OGG file." },
+      { status: 400 }
+    );
+  }
+
+>>>>>>> 5fe4666 (Update project)
   try {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,

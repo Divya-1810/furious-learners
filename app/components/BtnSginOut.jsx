@@ -89,7 +89,15 @@ export default function BtnSginOut() {
             Date of Birth:
           </h3>
           <p className="text-sm sm:text-base text-gray-900">
+<<<<<<< HEAD
             {user.dob || "N/A"}
+=======
+            {user.dob ? new Date(user.dob).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }) : "N/A"}
+>>>>>>> 5fe4666 (Update project)
           </p>
         </div>
         <div>

@@ -56,6 +56,10 @@ export default function SignupPage() {
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-lg shadow-md p-6 w-full max-w-md space-y-4"
+<<<<<<< HEAD
+=======
+        suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
       >
         <h1 className="text-2xl font-bold text-center text-gray-800">Signup</h1>
 
@@ -65,6 +69,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <input
@@ -74,6 +82,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <input
@@ -83,6 +95,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <input
@@ -91,6 +107,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <select
@@ -98,6 +118,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         >
           <option value="">Select Gender</option>
           <option value="male">Male</option>
@@ -113,6 +137,10 @@ export default function SignupPage() {
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-md w-full px-3 py-2"
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         />
 
         <button
@@ -121,6 +149,10 @@ export default function SignupPage() {
           className={`bg-teal-500 hover:bg-teal-600 text-white font-semibold rounded-md w-full py-2 transition duration-300 ${
             loading ? "opacity-50 cursor-not-allowed" : ""
           }`}
+<<<<<<< HEAD
+=======
+          suppressHydrationWarning
+>>>>>>> 5fe4666 (Update project)
         >
           {loading ? "Processing..." : "Sign Up"}
         </button>

@@ -128,7 +128,10 @@ export default function Page() {
                   _id={course._id}
                   name={course.title}
                   author={course.instructorName}
+<<<<<<< HEAD
                   price={course.price}
+=======
+>>>>>>> 5fe4666 (Update project)
                   handlerFunction={() => {
                     enrollCourse(course._id);
                   }}
