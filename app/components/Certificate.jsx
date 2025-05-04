@@ -99,7 +99,7 @@ const Certificate = ({ studentName, courseName }) => {
         </div>
 
         <p className="text">
-          For successfully completing the{" "}
+          For successfully completing the{"     "}
           <strong id="courseName">{courseName}</strong>
           offered by <strong>Furious Learning Management System</strong>,<br />
           in recognition of their dedication and effort in acquiring new
@@ -270,7 +270,6 @@ const Certificate = ({ studentName, courseName }) => {
         </div>
 
         <button className="download-btn" onClick={generateCertificate}>
->>>>>>> 5fe4666 (Update project)
           Download Certificate
         </button>
       </div>

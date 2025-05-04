@@ -7,10 +7,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { PiCertificateDuotone } from "react-icons/pi";
 import { FaPersonMilitaryPointing } from "react-icons/fa6";
 import CourseCategories from "./components/CourseCart";
-<<<<<<< HEAD
 import PricingPlans from "./components/PricePlan";
-=======
->>>>>>> 5fe4666 (Update project)
 import Footer from "./components/footer";
 import { useSession } from "next-auth/react";
 
@@ -102,10 +99,7 @@ export default function Page() {
       </div>
 
       <CourseCategories />
-<<<<<<< HEAD
       <PricingPlans />
-=======
->>>>>>> 5fe4666 (Update project)
       <Footer />
     </div>
   );

@@ -23,9 +23,6 @@ const CourseSchema = new mongoose.Schema({
     {
       title: String,
       content: String,
-<<<<<<< HEAD
-      youtubeUrl: String,
-=======
       videoFile: {
         url: String,
         filename: String,
@@ -38,7 +35,6 @@ const CourseSchema = new mongoose.Schema({
         size: Number,
         mimetype: String
       },
->>>>>>> 5fe4666 (Update project)
       order: Number,
     },
   ],

@@ -7,55 +7,30 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
-<<<<<<< HEAD
-export default function CourseVideoPage() {
-=======
 export default function CourseContentPage() {
->>>>>>> 5fe4666 (Update project)
   const { data: session } = useSession();
   const { id } = useParams();
   const router = useRouter();
 
   const [course, setCourse] = useState(null);
   const [instructorEmail, setInstructorEmail] = useState("");
-<<<<<<< HEAD
-  const [videoTitle, setVideoTitle] = useState("Introduction");
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState(null);
-=======
   const [currentModule, setCurrentModule] = useState(null);
   const [error, setError] = useState(null);
   const [downloading, setDownloading] = useState(false);
->>>>>>> 5fe4666 (Update project)
 
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const [mailStatus, setMailStatus] = useState("");
-<<<<<<< HEAD
-  const [downloading, setDownloading] = useState(false);
-=======
->>>>>>> 5fe4666 (Update project)
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-<<<<<<< HEAD
-        console.log(id);
-        const res = await fetch(`/api/course/${id}`);
-        const data = await res.json();
-        const fetchedCourse = data.course;
-        console.log(data.course);
-        setCourse(fetchedCourse);
-        setUrl(fetchedCourse.modules?.[0]?.youtubeUrl || "");
-        setVideoTitle(fetchedCourse.modules?.[0]?.title || "Introduction");
-=======
         const res = await fetch(`/api/course/${id}`);
         const data = await res.json();
         const fetchedCourse = data.course;
         setCourse(fetchedCourse);
         setCurrentModule(fetchedCourse.modules?.[0] || null);
->>>>>>> 5fe4666 (Update project)
       } catch (err) {
         setError("Something went wrong while fetching course.");
       }
@@ -70,10 +45,6 @@ export default function CourseContentPage() {
       try {
         const res = await fetch(`/api/instructor/?id=${course.instructor}`);
         const result = await res.json();
-<<<<<<< HEAD
-        console.log(result);
-=======
->>>>>>> 5fe4666 (Update project)
         setInstructorEmail(result.data.email);
       } catch (err) {
         console.error("Instructor fetch error:", err);
@@ -174,24 +145,6 @@ export default function CourseContentPage() {
       <Nav />
 
       <main className="flex flex-col lg:flex-row gap-6 px-4 py-8 sm:px-6 lg:px-12">
-<<<<<<< HEAD
-        {/* Left: Video */}
-        <section className="flex-1 flex flex-col gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold">{course.title}</h1>
-          <h2 className="text-lg text-gray-600 font-medium">
-            Lecture: {videoTitle}
-          </h2>
-
-          <div className="w-full aspect-video rounded-xl shadow-lg overflow-hidden">
-            <iframe
-              className="w-full h-full"
-              src={url}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-=======
         {/* Main Content */}
         <section className="flex-1 flex flex-col gap-4">
           <h1 className="text-2xl sm:text-3xl font-bold">{course.title}</h1>
@@ -228,7 +181,6 @@ export default function CourseContentPage() {
             <div className="prose max-w-none">
               {currentModule?.content}
             </div>
->>>>>>> 5fe4666 (Update project)
           </div>
 
           <button
@@ -244,104 +196,27 @@ export default function CourseContentPage() {
             </p>
           )}
         </section>
-<<<<<<< HEAD
-=======
 
         {/* Module List */}
->>>>>>> 5fe4666 (Update project)
-        <aside className="w-full lg:w-[30%] max-h-[70vh] bg-white rounded-xl shadow-lg p-4 overflow-y-auto">
-          <h3 className="text-xl sm:text-2xl font-semibold mb-4">
-            Course Contents
-          </h3>
-          <ul className="space-y-3">
-            {course.modules?.map((mod, index) => (
-              <li
+        <section className="w-full lg:w-80 bg-white rounded-xl shadow-lg p-4">
+          <h3 className="text-lg font-semibold mb-4">Course Modules</h3>
+          <div className="space-y-2">
+            {course.modules?.map((module, index) => (
+              <button
                 key={index}
-<<<<<<< HEAD
-                className="p-3 bg-teal-50 hover:bg-teal-100 text-gray-800 rounded-lg shadow-sm transition-all cursor-pointer"
-                onClick={() => {
-                  setUrl(mod.youtubeUrl);
-                  setVideoTitle(mod.title);
-                }}
-=======
-                className={`p-3 ${
-                  currentModule?.title === mod.title
-                    ? "bg-teal-100"
-                    : "bg-teal-50 hover:bg-teal-100"
-                } text-gray-800 rounded-lg shadow-sm transition-all cursor-pointer`}
-                onClick={() => setCurrentModule(mod)}
->>>>>>> 5fe4666 (Update project)
+                onClick={() => setCurrentModule(module)}
+                className={`w-full text-left px-4 py-2 rounded-lg transition ${
+                  currentModule === module
+                    ? "bg-teal-100 text-teal-800"
+                    : "hover:bg-gray-100"
+                }`}
               >
-                {mod.title}
-              </li>
+                {module.title}
+              </button>
             ))}
-          </ul>
-<<<<<<< HEAD
-=======
-          
->>>>>>> 5fe4666 (Update project)
-          <button
-            className="mt-4 w-full px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition disabled:opacity-60"
-            onClick={generateCertificate}
-            disabled={downloading}
-          >
-            {downloading ? "Generating..." : "Get Certificate"}
-          </button>
-        </aside>
-      </main>
-
-<<<<<<< HEAD
-      {/* Message Popup */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-xl w-[90%] max-w-md shadow-2xl">
-            <h2 className="text-xl font-semibold mb-2">Send a message</h2>
-            <textarea
-              rows={5}
-              className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:outline-teal-500"
-              placeholder="Write your message here..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
-=======
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Message Instructor</h3>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              className="w-full h-32 p-2 border rounded-lg mb-4"
-              placeholder="Type your message here..."
-            />
-            <div className="flex justify-end gap-4">
-              <button
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
->>>>>>> 5fe4666 (Update project)
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSendMail}
-<<<<<<< HEAD
-                disabled={sending}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-60"
-=======
-                disabled={sending || !message.trim()}
-                className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:opacity-50"
->>>>>>> 5fe4666 (Update project)
-              >
-                {sending ? "Sending..." : "Send"}
-              </button>
-            </div>
           </div>
-        </div>
-      )}
+        </section>
+      </main>
 
       <Footer />
     </div>

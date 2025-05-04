@@ -1,57 +1,3 @@
-<<<<<<< HEAD
-import Course from "@/app/models/Course";
-import connectDB from "@/app/utils/db";
-import { NextResponse } from "next/server";
-
-export async function PATCH(req, { params }) {
-  await connectDB();
-
-  const { id } = params;
-  if (!id) {
-    return NextResponse.json({ error: "Missing course ID" }, { status: 400 });
-  }
-
-  const { title, content, youtubeUrl, order } = await req.json();
-
-  const newModule = {
-    title,
-    content,
-    youtubeUrl,
-    order,
-  };
-
-  try {
-    const updatedCourse = await Course.findByIdAndUpdate(
-      id,
-      { $push: { modules: newModule } },
-      { new: true }
-    );
-
-    if (!updatedCourse) {
-      return NextResponse.json({ error: "Course not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(
-      { message: "Module added successfully", course: updatedCourse },
-      { status: 200 }
-    );
-  } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
-}
-
-export async function GET(req, { params }) {
-  await connectDB();
-
-  const id = params.id; // ✅ No "await" here!
-
-  if (!id) {
-    return NextResponse.json({ error: "Missing course ID" }, { status: 400 });
-  }
-
-  try {
-    const course = await Course.findById(id);
-=======
 import { NextResponse } from "next/server";
 import connectDB from "@/app/utils/db";
 import Course from "@/app/models/Course";
@@ -67,16 +13,10 @@ export async function GET(request, { params }) {
     }
 
     const course = await Course.findById(courseId);
->>>>>>> 5fe4666 (Update project)
     if (!course) {
       return NextResponse.json({ error: "Course not found" }, { status: 404 });
     }
 
-<<<<<<< HEAD
-    return NextResponse.json({ course }, { status: 200 });
-  } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-=======
     return NextResponse.json({ course });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -224,6 +164,5 @@ export async function DELETE(request, { params }) {
   } catch (error) {
     console.error("API route error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
->>>>>>> 5fe4666 (Update project)
   }
 }

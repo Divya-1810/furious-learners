@@ -18,34 +18,6 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-<<<<<<< HEAD
-        await connectDB();
-        let user = await User.findOne({ email: credentials.email });
-
-        if (!user) {
-          user = await Instructor.findOne({ email: credentials.email });
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-        }
-
-        const isPasswordValid = await compare(
-          credentials.password,
-          user.password
-        );
-        if (!isPasswordValid) throw new Error("Invalid password");
-
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          dob: user.dob || null,
-          gender: user.gender || null,
-          phoneNumber: user.phoneNumber || null,
-        };
-=======
         try {
           await connectDB();
           let user = await User.findOne({ email: credentials.email });
@@ -77,7 +49,6 @@ export const authOptions = {
           console.error("Auth error:", error);
           throw error;
         }
->>>>>>> 5fe4666 (Update project)
       },
     }),
   ],
@@ -94,11 +65,7 @@ export const authOptions = {
     },
     async session({ session, token }) {
       if (token) {
-<<<<<<< HEAD
-        session.user._id = token.id; // Important for consistency
-=======
         session.user._id = token.id;
->>>>>>> 5fe4666 (Update project)
         session.user.role = token.role;
         session.user.dob = token.dob;
         session.user.gender = token.gender;
@@ -109,15 +76,6 @@ export const authOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-<<<<<<< HEAD
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-};
-
-const handler = NextAuth(authOptions);
-export const GET = handler;
-export const POST = handler;
-=======
     error: "/auth/error",
   },
   session: {
@@ -130,4 +88,3 @@ export const POST = handler;
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
->>>>>>> 5fe4666 (Update project)
